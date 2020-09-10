@@ -5,9 +5,9 @@ branding:
   icon: 'upload-cloud'
   color: 'blue'
 inputs:
-  github_token:
+  token:
     required: true
-    description: 'Set a generated GITHUB_TOKEN for updating gist.'
+    description: 'Set a generated TOKEN for updating gist.'
   gist_id:
     required: true
     description: 'Set id of the gist to be updated.'

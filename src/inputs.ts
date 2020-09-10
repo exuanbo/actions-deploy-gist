@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 
 export interface Inputs {
-  readonly GithubToken: string
+  readonly Token: string
   readonly GistID: string
   readonly GistFileName?: string
   readonly FilePath: string
@@ -17,7 +17,7 @@ export const showInputs = (inp: Inputs): void => {
 
 export const getInputs = (): Inputs => {
   const inp: Inputs = {
-    GithubToken: core.getInput('github_token'),
+    Token: core.getInput('token'),
     GistID: core.getInput('gist_id'),
     GistFileName: core.getInput('gist_file_name'),
     FilePath: core.getInput('file_path')

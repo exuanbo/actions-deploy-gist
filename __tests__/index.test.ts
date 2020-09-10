@@ -10,7 +10,7 @@ test('input', () => {
 
   const inp = getInputs()
 
-  expect(inp.GithubToken).toMatch('')
+  expect(inp.Token).toMatch('')
   expect(inp.GistID).toMatch('test_gist_id')
   expect(inp.GistFileName).toMatch('test_gist_file_name')
   expect(inp.FilePath).toMatch('test_file_path')

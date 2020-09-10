@@ -16,7 +16,7 @@ export const run = async (): Promise<void> => {
     core.endGroup()
 
     core.startGroup('Deploy to gist')
-    const octokit = github.getOctokit(inp.GithubToken)
+    const octokit = github.getOctokit(inp.Token)
     const fileName = inp.GistFileName ? inp.GistFileName : path.basename(filePath)
     octokit.gists.update({
       gist_id: inp.GistID,
