@@ -1,24 +1,60 @@
 name: 'build-test'
-on: # rebuild any PRs and main branch changes
+on:
   pull_request:
+    paths-ignore:
+      - '*.md'
   push:
     branches:
       - main
       - 'releases/*'
+    paths-ignore:
+      - '*.md'
 
 jobs:
-  build: # make sure build/ci work properly
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: |
-          npm install
-      - run: |
-          npm run all
-  test: # make sure the action works on a clean machine without building
+
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "${GITHUB_CONTEXT}"
+
+      - name: Setup Node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12'
+
+      - name: Dump version
+        run: |
+          node -v
+          npm --version
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Test build
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+        run: npm run all
+
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
         with:
-          milliseconds: 1000
+          gist_id: e885afa349a0e5d1cfb408e46d6a37bc
+          gist_file_name: foo.bar
+          file_path: ./__tests__/foo.bar
