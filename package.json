@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "format": "prettier-standard --format",
-    "package": "ncc build --source-map --license licenses.txt",
+    "package": "ncc build --license licenses.txt",
     "test": "jest",
     "all": "npm run build && npm test && npm run package"
   },
