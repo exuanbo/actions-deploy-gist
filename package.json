@@ -2,7 +2,7 @@
   "name": "actions-deploy-gist",
   "version": "0.0.0",
   "private": true,
-  "description": "",
+  "description": "📌 Deploy file to gist",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
@@ -16,7 +16,10 @@
     "url": "git+https://github.com/exuanbo/actions-deploy-gist.git"
   },
   "keywords": [
-    "actions"
+    "actions",
+    "deploy",
+    "gist",
+    "userscript"
   ],
   "author": {
     "name": "exuanbo",
