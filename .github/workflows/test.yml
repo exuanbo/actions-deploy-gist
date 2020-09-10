@@ -1,4 +1,4 @@
-name: 'build-test'
+name: 'test'
 on:
   pull_request:
     paths-ignore:
@@ -6,7 +6,6 @@ on:
   push:
     branches:
       - main
-      - 'releases/*'
     paths-ignore:
       - '*.md'
 
@@ -47,7 +46,7 @@ jobs:
           INPUT_TOKEN: ${{ secrets.TOKEN }}
         run: npm run all
 
-  test:
+  action:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
