@@ -9,7 +9,7 @@
     "format": "prettier-standard --format",
     "package": "ncc build --source-map --license licenses.txt",
     "test": "jest",
-    "all": "npm run build && npm run format && npm test && npm run package"
+    "all": "npm run build && npm test && npm run package"
   },
   "repository": {
     "type": "git",
