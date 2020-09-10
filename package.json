@@ -3,13 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "description": "",
-  "main": "lib/main.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
     "format": "prettier-standard --format",
     "package": "ncc build --source-map --license licenses.txt",
     "test": "jest",
-    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+    "all": "npm run build && npm run format && npm test && npm run package"
   },
   "repository": {
     "type": "git",
