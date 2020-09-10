@@ -17,14 +17,17 @@
     "type": "git",
     "url": "git+https://github.com/exuanbo/actions-deploy-gist.git"
   },
-  "keywords": ["actions"],
+  "keywords": [
+    "actions"
+  ],
   "author": {
     "name": "exuanbo",
     "email": "exuanbo@protonmail.com"
   },
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.5"
+    "@actions/core": "^1.2.5",
+    "@actions/github": "^4.0.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.10",
