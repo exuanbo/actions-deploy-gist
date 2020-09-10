@@ -44,7 +44,7 @@ jobs:
 
       - name: Test build
         env:
-          TOKEN: ${{ secrets.TOKEN }}
+          INPUT_TOKEN: ${{ secrets.TOKEN }}
         run: npm run all
 
   test:
@@ -52,9 +52,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./
-        env:
-          TOKEN: ${{ secrets.TOKEN }}
         with:
+          token: ${{ secrets.TOKEN }}
           gist_id: e885afa349a0e5d1cfb408e46d6a37bc
           gist_file_name: foo.bar
           file_path: ./__tests__/foo.bar
