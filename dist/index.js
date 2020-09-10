@@ -1,4 +1,4 @@
-require('./sourcemap-register.js');module.exports =
+module.exports =
 /******/ (function(modules, runtime) { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	// The module cache
@@ -5379,6 +5379,7 @@ exports.run = () => __awaiter(void 0, void 0, void 0, function* () {
         const workSpace = process.env.GITHUB_WORKSPACE;
         const filePath = path_1.default.join(workSpace, inp.FilePath);
         const fileContent = fs_1.default.readFileSync(filePath).toString();
+        core.info(`[INFO] Done with file "${filePath}"`);
         core.endGroup();
         core.startGroup('Deploy to gist');
         const octokit = github.getOctokit(inp.Token);
@@ -5392,6 +5393,7 @@ exports.run = () => __awaiter(void 0, void 0, void 0, function* () {
                 }
             }
         });
+        core.info(`[INFO] Done with gist "${inp.GistID}/${fileName}"`);
         core.endGroup();
         core.info('[INFO] Action successfully completed');
     }
@@ -6061,4 +6063,3 @@ function wrappy (fn, cb) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=index.js.map
