@@ -13,6 +13,7 @@ export const run = async (): Promise<void> => {
     const workSpace = process.env.GITHUB_WORKSPACE as string
     const filePath = path.join(workSpace, inp.FilePath)
     const fileContent = fs.readFileSync(filePath).toString()
+    core.info(`[INFO] Done with file "${filePath}"`)
     core.endGroup()
 
     core.startGroup('Deploy to gist')
@@ -27,6 +28,7 @@ export const run = async (): Promise<void> => {
         }
       }
     })
+    core.info(`[INFO] Done with gist "${inp.GistID}/${fileName}"`)
     core.endGroup()
 
     core.info('[INFO] Action successfully completed')
