@@ -26,15 +26,22 @@ Check [Scopes for OAuth Apps](https://docs.github.com/en/developers/apps/scopes-
 
 ### Project setup
 
-1. Edit your repo `.github/workflows/foo.yml`.
+1. Edit your repo `.github/workflows/foo.yml` like in the example.
 1. Go to your repo **Settings > Secrets**. Add the token generated above as `TOKEN`.
 
 ### Options
 
-- `token`: `${{ secrets.TOKEN }}`
-- `gist_id`: The id portion from your gist url, e.g. `https://gist.github.com/exuanbo/`**`e885afa349a0e5d1cfb408e46d6a37bc`**.
-- `gist_file_name`: Name of the file to be added in your gist. If not provided, the original file name from `file_path` will be used.
-- `file_path`: E.g. `./dist/foo.bar`.
+#### `gist_id`
+
+The id portion from your gist url, e.g. `https://gist.github.com/exuanbo/`**`e885afa349a0e5d1cfb408e46d6a37bc`**.
+
+#### `gist_file_name`
+
+Name of the file to be added in your gist. If not provided, the original file name from `file_path` will be used.
+
+#### `file_path`
+
+Relative to your repo's root directory, e.g. `./dist/foo.bar`.
 
 ## License
 
