@@ -28,7 +28,7 @@ export const run = async (): Promise<void> => {
         }
       }
     })
-    core.info(`[INFO] Done with gist "${inp.GistID}/${fileName}"`)
+    core.info(`[INFO] Done with gist "${process.env.GITHUB_ACTOR}/${inp.GistID}/${fileName}"`)
     core.endGroup()
 
     core.info('[INFO] Action successfully completed')
