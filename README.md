@@ -7,7 +7,7 @@
 ```yml
 - uses: actions/checkout@v2
 - name: Deploy
-  uses: exuanbo/actions-deploy-gist@v1.0.2
+  uses: exuanbo/actions-deploy-gist@v1.0.3
   with:
     token: ${{ secrets.TOKEN }}
     gist_id: from_your_gist_url
