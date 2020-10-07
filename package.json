@@ -5,7 +5,7 @@
   "description": "📌 Deploy file to gist",
   "main": "lib/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf lib && tsc",
     "test": "ts-standard && jest",
     "package": "ncc build --license licenses.txt",
     "all": "npm run build && npm test && npm run package",
