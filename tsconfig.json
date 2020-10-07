@@ -1,10 +1,7 @@
 {
+  "extends": "./__tests__/tsconfig",
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "outDir": "./lib",
-    "strict": true,
-    "esModuleInterop": true
+    "outDir": "./lib"
   },
   "exclude": ["__tests__/**/*.ts"]
 }
