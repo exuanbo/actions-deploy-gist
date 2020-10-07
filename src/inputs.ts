@@ -10,7 +10,7 @@ export interface Inputs {
 export const showInputs = (inp: Inputs): void => {
   core.info(`\
 [INFO] GistID: ${inp.GistID}
-[INFO] GistFileName: ${inp.GistFileName ? inp.GistFileName : 'No Change'}
+[INFO] GistFileName: ${inp.GistFileName !== undefined ? inp.GistFileName : 'No Change'}
 [INFO] FilePath: ${inp.FilePath}
 `)
 }
