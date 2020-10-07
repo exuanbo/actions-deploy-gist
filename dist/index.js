@@ -36,6 +36,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+/* eslint "@typescript-eslint/no-floating-promises": 0 */
 const core = __importStar(__webpack_require__(186));
 const run_1 = __webpack_require__(884);
 (() => __awaiter(void 0, void 0, void 0, function* () {
@@ -43,7 +44,12 @@ const run_1 = __webpack_require__(884);
         yield run_1.run();
     }
     catch (err) {
-        core.setFailed(`Action failed with "${err.message}"`);
+        if (err instanceof Error) {
+            core.setFailed(`Action failed with "${err.message}"`);
+        }
+        else {
+            throw err;
+        }
     }
 }))();
 
@@ -80,7 +86,7 @@ const core = __importStar(__webpack_require__(186));
 exports.showInputs = (inp) => {
     core.info(`\
 [INFO] GistID: ${inp.GistID}
-[INFO] GistFileName: ${inp.GistFileName ? inp.GistFileName : 'No Change'}
+[INFO] GistFileName: ${inp.GistFileName !== undefined ? inp.GistFileName : 'No Change'}
 [INFO] FilePath: ${inp.FilePath}
 `);
 };
@@ -152,8 +158,8 @@ exports.run = () => __awaiter(void 0, void 0, void 0, function* () {
         core.endGroup();
         core.startGroup('Deploy to gist');
         const octokit = github.getOctokit(inp.Token);
-        const fileName = inp.GistFileName ? inp.GistFileName : path_1.default.basename(filePath);
-        octokit.gists.update({
+        const fileName = inp.GistFileName !== undefined ? inp.GistFileName : path_1.default.basename(filePath);
+        yield octokit.gists.update({
             gist_id: inp.GistID,
             files: {
                 [fileName]: {
