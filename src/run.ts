@@ -12,7 +12,7 @@ export const run = async (): Promise<void> => {
     core.startGroup('Read file content')
     const workSpace = process.env.GITHUB_WORKSPACE as string
     const filePath = path.join(workSpace, inp.FilePath)
-    const fileContent = fs.readFileSync(filePath).toString()
+    const fileContent = fs.readFileSync(filePath, 'utf-8')
     core.info(`[INFO] Done with file "${filePath}"`)
     core.endGroup()
 
