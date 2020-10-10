@@ -33,6 +33,7 @@ export const run = async (): Promise<void> => {
 
     core.info('[INFO] Action successfully completed')
   } catch (err) {
-    throw new Error(err.message)
+    if (err instanceof Error) throw new Error(err.message)
+    else throw err
   }
 }
