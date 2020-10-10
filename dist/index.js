@@ -44,12 +44,10 @@ const run_1 = __webpack_require__(884);
         yield run_1.run();
     }
     catch (err) {
-        if (err instanceof Error) {
+        if (err instanceof Error)
             core.setFailed(`Action failed with "${err.message}"`);
-        }
-        else {
+        else
             throw err;
-        }
     }
 }))();
 
@@ -153,7 +151,7 @@ exports.run = () => __awaiter(void 0, void 0, void 0, function* () {
         core.startGroup('Read file content');
         const workSpace = process.env.GITHUB_WORKSPACE;
         const filePath = path_1.default.join(workSpace, inp.FilePath);
-        const fileContent = fs_1.default.readFileSync(filePath).toString();
+        const fileContent = fs_1.default.readFileSync(filePath, 'utf-8');
         core.info(`[INFO] Done with file "${filePath}"`);
         core.endGroup();
         core.startGroup('Deploy to gist');
@@ -173,7 +171,10 @@ exports.run = () => __awaiter(void 0, void 0, void 0, function* () {
         core.info('[INFO] Action successfully completed');
     }
     catch (err) {
-        throw new Error(err.message);
+        if (err instanceof Error)
+            throw new Error(err.message);
+        else
+            throw err;
     }
 });
 
