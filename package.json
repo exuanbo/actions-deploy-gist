@@ -33,7 +33,7 @@
   "devDependencies": {
     "@types/jest": "26.0.20",
     "@types/node": "14.14.20",
-    "@vercel/ncc": "0.26.2",
+    "@vercel/ncc": "0.27.0",
     "dotenv": "8.2.0",
     "jest": "26.6.3",
     "jest-circus": "26.6.3",
