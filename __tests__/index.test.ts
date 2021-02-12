@@ -1,19 +1,19 @@
-import * as cp from 'child_process'
-import * as path from 'path'
+import { execSync } from 'child_process'
+import path from 'path'
 import dotenv from 'dotenv'
-import { getInputs } from '../src/inputs'
+import { getInput } from '../src/inputs'
 
 test('input', () => {
-  process.env.INPUT_GIST_ID = 'test_gist_id'
-  process.env.INPUT_GIST_FILE_NAME = 'test_gist_file_name'
-  process.env.INPUT_FILE_PATH = 'test_file_path'
+  process.env.INPUT_GIST_ID = 'gist_id'
+  process.env.INPUT_GIST_FILE_NAME = 'gist_file_name'
+  process.env.INPUT_FILE_PATH = 'file_path'
 
-  const inp = getInputs()
+  const input = getInput()
 
-  expect(inp.Token).toMatch('')
-  expect(inp.GistID).toMatch('test_gist_id')
-  expect(inp.GistFileName).toMatch('test_gist_file_name')
-  expect(inp.FilePath).toMatch('test_file_path')
+  expect(input.Token).toMatch('')
+  expect(input.GistID).toMatch('gist_id')
+  expect(input.GistFileName).toMatch('gist_file_name')
+  expect(input.FilePath).toMatch('file_path')
 })
 
 test('run', () => {
@@ -23,6 +23,6 @@ test('run', () => {
   process.env.INPUT_GIST_FILE_NAME = 'foo.bar'
   process.env.INPUT_FILE_PATH = '__tests__/foo.bar'
 
-  const ip = path.join(__dirname, '..', 'lib', 'index.js')
-  cp.execSync(`node ${ip}`, { env: process.env })
+  const filePath = path.join(__dirname, '..', 'lib', 'index.js')
+  execSync(`node ${filePath}`, { env: process.env })
 })
