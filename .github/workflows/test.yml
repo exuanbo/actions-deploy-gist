@@ -1,13 +1,13 @@
-name: 'test'
+name: "test"
 on:
   pull_request:
     paths-ignore:
-      - '*.md'
+      - "*.md"
   push:
     branches:
       - main
     paths-ignore:
-      - '*.md'
+      - "*.md"
 
 jobs:
   build:
@@ -25,9 +25,9 @@ jobs:
         id: nvm
 
       - name: Setup Node
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v2
         with:
-          node-version: '${{ steps.nvm.outputs.NVMRC }}'
+          node-version: "${{ steps.nvm.outputs.NVMRC }}"
 
       - name: Dump version
         run: |
