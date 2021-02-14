@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import { showInput, getInput } from './inputs'
+import { showInput, getInput } from './input'
 
 export const run = async (): Promise<void> => {
   const input = getInput()

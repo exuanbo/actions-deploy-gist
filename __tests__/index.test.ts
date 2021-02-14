@@ -1,7 +1,7 @@
 import { execSync } from 'child_process'
 import path from 'path'
 import dotenv from 'dotenv'
-import { getInput } from '../src/inputs'
+import { getInput } from '../src/input'
 
 test('input', () => {
   process.env.INPUT_GIST_ID = 'gist_id'
