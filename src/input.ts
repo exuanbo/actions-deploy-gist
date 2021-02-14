@@ -7,6 +7,13 @@ export interface Input {
   readonly FilePath: string
 }
 
+export const getInput = (): Input => ({
+  Token: core.getInput('token'),
+  GistID: core.getInput('gist_id'),
+  GistFileName: core.getInput('gist_file_name'),
+  FilePath: core.getInput('file_path')
+})
+
 export const showInput = (input: Input): void => {
   core.info(`\
 [INFO] GistID: ${input.GistID}
@@ -14,10 +21,3 @@ export const showInput = (input: Input): void => {
 [INFO] FilePath: ${input.FilePath}
 `)
 }
-
-export const getInput = (): Input => ({
-  Token: core.getInput('token'),
-  GistID: core.getInput('gist_id'),
-  GistFileName: core.getInput('gist_file_name'),
-  FilePath: core.getInput('file_path')
-})
