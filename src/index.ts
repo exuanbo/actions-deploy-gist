@@ -6,7 +6,7 @@ import { run } from './run'
     await run()
   } catch (err) {
     if (err instanceof Error) {
-      core.setFailed(`Action failed with "${err.message}"`)
+      core.setFailed(`[INFO] Action failed with "Error: ${err.message}"`)
       return
     }
     throw err
