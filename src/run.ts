@@ -1,25 +1,31 @@
-import fs from 'fs'
+import { promises as fs } from 'fs'
 import path from 'path'
-import * as core from '@actions/core'
-import * as github from '@actions/github'
-import { showInput, getInput } from './input'
+import { startGroup, endGroup, info } from '@actions/core'
+import { getOctokit } from '@actions/github'
+import { getInput } from './input'
 
 export const run = async (): Promise<void> => {
   const input = getInput()
-  showInput(input)
 
-  core.startGroup('Read file content')
+  startGroup('Dump inputs')
+  info(`\
+[INFO] GistId: ${input.gistId}
+[INFO] GistFileName: ${input.gistFileName ?? 'No Change'}
+[INFO] FilePath: ${input.filePath}`)
+  endGroup()
+
+  startGroup('Read file content')
   const workSpace = process.env.GITHUB_WORKSPACE!
-  const filePath = path.join(workSpace, input.FilePath)
-  const content = fs.readFileSync(filePath, 'utf-8')
-  core.info(`[INFO] Done with file "${filePath}"`)
-  core.endGroup()
+  const filePath = path.join(workSpace, input.filePath)
+  const content = await fs.readFile(filePath, 'utf-8')
+  info(`[INFO] Done with file "${filePath}"`)
+  endGroup()
 
-  core.startGroup('Deploy to gist')
-  const octokit = github.getOctokit(input.Token)
-  const fileName = input.GistFileName ?? path.basename(filePath)
-  await octokit.gists.update({
-    gist_id: input.GistID,
+  startGroup('Deploy to gist')
+  const octokit = getOctokit(input.token)
+  const fileName = input.gistFileName ?? path.basename(filePath)
+  await octokit.rest.gists.update({
+    gist_id: input.gistId,
     files: {
       [fileName]: {
         fileName,
@@ -27,8 +33,8 @@ export const run = async (): Promise<void> => {
       }
     }
   })
-  core.info(`[INFO] Done with gist "${input.GistID}/${fileName}"`)
-  core.endGroup()
+  info(`[INFO] Done with gist "${input.gistId}/${fileName}"`)
+  endGroup()
 
-  core.info('[INFO] Action successfully completed')
+  info('[INFO] Action successfully completed')
 }

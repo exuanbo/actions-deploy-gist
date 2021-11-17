@@ -1,23 +1,17 @@
-import * as core from '@actions/core'
+import { getInput as getActionInput } from '@actions/core'
 
-export interface Input {
-  readonly Token: string
-  readonly GistID: string
-  readonly GistFileName?: string
-  readonly FilePath: string
+interface Input {
+  readonly token: string
+  readonly gistId: string
+  readonly gistFileName?: string
+  readonly filePath: string
 }
 
-export const getInput = (): Input => ({
-  Token: core.getInput('token'),
-  GistID: core.getInput('gist_id'),
-  GistFileName: core.getInput('gist_file_name'),
-  FilePath: core.getInput('file_path')
-})
-
-export const showInput = (input: Input): void => {
-  core.info(`\
-[INFO] GistID: ${input.GistID}
-[INFO] GistFileName: ${input.GistFileName ?? 'No Change'}
-[INFO] FilePath: ${input.FilePath}
-`)
+export const getInput = (): Input => {
+  return {
+    token: getActionInput('token'),
+    gistId: getActionInput('gist_id'),
+    gistFileName: getActionInput('gist_file_name'),
+    filePath: getActionInput('file_path')
+  }
 }

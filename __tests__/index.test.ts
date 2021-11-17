@@ -10,19 +10,19 @@ test('input', () => {
 
   const input = getInput()
 
-  expect(input.Token).toMatch('')
-  expect(input.GistID).toMatch('gist_id')
-  expect(input.GistFileName).toMatch('gist_file_name')
-  expect(input.FilePath).toMatch('file_path')
+  expect(input.token).toMatch('')
+  expect(input.gistId).toMatch('gist_id')
+  expect(input.gistFileName).toMatch('gist_file_name')
+  expect(input.filePath).toMatch('file_path')
 })
 
 test('run', () => {
-  dotenv.config()
   process.env.GITHUB_WORKSPACE = process.cwd()
+  dotenv.config()
   process.env.INPUT_GIST_ID = 'e885afa349a0e5d1cfb408e46d6a37bc'
   process.env.INPUT_GIST_FILE_NAME = 'foo.bar'
   process.env.INPUT_FILE_PATH = '__tests__/foo.bar'
 
-  const filePath = path.join(__dirname, '..', 'lib', 'index.js')
+  const filePath = path.join(__dirname, '../lib/index.js')
   execSync(`node ${filePath}`, { env: process.env })
 })
