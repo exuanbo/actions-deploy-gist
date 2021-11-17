@@ -1,16 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES2015",
-    "module": "commonjs",
-    "outDir": "./lib",
-    "rootDir": "./src",
     "strict": true,
+
+    "module": "commonjs",
     "moduleResolution": "node",
+
+    "noEmit": true,
+
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": [
-    "./src/**/*.ts"
-  ]
+    "forceConsistentCasingInFileNames": true,
+
+    "target": "es2019",
+
+    "skipLibCheck": true
+  }
 }

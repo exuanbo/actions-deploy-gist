@@ -4,11 +4,10 @@
   "private": true,
   "main": "lib/index.js",
   "scripts": {
-    "build": "rm -rf lib && tsc",
-    "test": "ts-standardx && jest",
+    "build": "rm -rf lib && tsc -p tsconfig.prod.json",
+    "test": "npm run build && ts-standardx && jest",
     "package": "ncc build --license licenses.txt",
-    "all": "npm run build && npm test && npm run package",
-    "format": "ts-standardx --fix"
+    "all": "npm test && npm run package"
   },
   "repository": {
     "type": "git",
