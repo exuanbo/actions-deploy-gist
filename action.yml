@@ -1,22 +1,22 @@
-name: 'Deploy to Gist'
-description: '📌 Deploy file to gist.'
-author: 'Exuanbo'
+name: "Deploy to Gist"
+description: "📌 Deploy file to Github Gist."
+author: "Exuanbo"
 branding:
-  icon: 'upload-cloud'
-  color: 'blue'
+  icon: "upload-cloud"
+  color: "green"
 inputs:
   token:
     required: true
-    description: 'Set a generated TOKEN for updating gist.'
+    description: "Set personal access token for updating gist."
   gist_id:
     required: true
-    description: 'Set id of the gist to be updated.'
+    description: "Set id of the gist to be updated."
   gist_file_name:
     required: false
-    description: 'Set a file name in the gist.'
+    description: "Set file name in the gist."
   file_path:
     required: true
-    description: 'Set path of the file to be deployed'
+    description: "Set path of the file to be deployed."
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node12"
+  main: "dist/index.js"
