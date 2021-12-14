@@ -9,8 +9,11 @@ export const run = async (): Promise<void> => {
 
   startGroup('Dump inputs')
   info(`\
-[INFO] GistId: ${input.gistId}
-[INFO] GistDescription: ${input.gistDescription}
+[INFO] GistId: ${input.gistId}${
+    input.gistDescription === undefined
+      ? ''
+      : `\n[INFO] GistDescription: ${input.gistDescription}`
+  }
 [INFO] GistFileName: ${input.gistFileName ?? 'No Change'}
 [INFO] FilePath: ${input.filePath}`)
   endGroup()

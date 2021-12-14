@@ -43,8 +43,9 @@ const run = async () => {
     const input = (0, input_1.getInput)();
     (0, core_1.startGroup)('Dump inputs');
     (0, core_1.info)(`\
-[INFO] GistId: ${input.gistId}
-[INFO] GistDescription: ${input.gistDescription}
+[INFO] GistId: ${input.gistId}${input.gistDescription === undefined
+        ? ''
+        : `\n[INFO] GistDescription: ${input.gistDescription}`}
 [INFO] GistFileName: ${(_a = input.gistFileName) !== null && _a !== void 0 ? _a : 'No Change'}
 [INFO] FilePath: ${input.filePath}`);
     (0, core_1.endGroup)();
