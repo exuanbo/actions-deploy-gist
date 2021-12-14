@@ -39,25 +39,25 @@ const core_1 = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(5438);
 const input_1 = __nccwpck_require__(8657);
 const run = async () => {
-    var _a, _b;
+    var _a;
     const input = (0, input_1.getInput)();
+    const workSpace = process.env.GITHUB_WORKSPACE;
+    const filePath = path_1.default.join(workSpace, input.filePath);
+    const fileName = (_a = input.gistFileName) !== null && _a !== void 0 ? _a : path_1.default.basename(filePath);
     (0, core_1.startGroup)('Dump inputs');
     (0, core_1.info)(`\
 [INFO] GistId: ${input.gistId}${input.gistDescription === undefined
         ? ''
         : `\n[INFO] GistDescription: ${input.gistDescription}`}
-[INFO] GistFileName: ${(_a = input.gistFileName) !== null && _a !== void 0 ? _a : 'No Change'}
+[INFO] GistFileName: ${fileName}
 [INFO] FilePath: ${input.filePath}`);
     (0, core_1.endGroup)();
     (0, core_1.startGroup)('Read file content');
-    const workSpace = process.env.GITHUB_WORKSPACE;
-    const filePath = path_1.default.join(workSpace, input.filePath);
     const content = await fs_1.promises.readFile(filePath, 'utf-8');
     (0, core_1.info)(`[INFO] Done with file "${filePath}"`);
     (0, core_1.endGroup)();
     (0, core_1.startGroup)('Deploy to gist');
     const octokit = (0, github_1.getOctokit)(input.token);
-    const fileName = (_b = input.gistFileName) !== null && _b !== void 0 ? _b : path_1.default.basename(filePath);
     await octokit.rest.gists.update({
         gist_id: input.gistId,
         description: input.gistDescription,
