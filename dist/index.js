@@ -13,6 +13,7 @@ const getInput = () => {
     return {
         token: (0, core_1.getInput)('token'),
         gistId: (0, core_1.getInput)('gist_id'),
+        gistDescription: (0, core_1.getInput)('gist_description'),
         gistFileName: (0, core_1.getInput)('gist_file_name'),
         filePath: (0, core_1.getInput)('file_path')
     };
@@ -43,6 +44,7 @@ const run = async () => {
     (0, core_1.startGroup)('Dump inputs');
     (0, core_1.info)(`\
 [INFO] GistId: ${input.gistId}
+[INFO] GistDescription: ${input.gistDescription}
 [INFO] GistFileName: ${(_a = input.gistFileName) !== null && _a !== void 0 ? _a : 'No Change'}
 [INFO] FilePath: ${input.filePath}`);
     (0, core_1.endGroup)();
@@ -57,6 +59,7 @@ const run = async () => {
     const fileName = (_b = input.gistFileName) !== null && _b !== void 0 ? _b : path_1.default.basename(filePath);
     await octokit.rest.gists.update({
         gist_id: input.gistId,
+        description: input.gistDescription,
         files: {
             [fileName]: {
                 fileName,

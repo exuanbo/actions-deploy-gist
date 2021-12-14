@@ -10,6 +10,7 @@ export const run = async (): Promise<void> => {
   startGroup('Dump inputs')
   info(`\
 [INFO] GistId: ${input.gistId}
+[INFO] GistDescription: ${input.gistDescription}
 [INFO] GistFileName: ${input.gistFileName ?? 'No Change'}
 [INFO] FilePath: ${input.filePath}`)
   endGroup()
@@ -26,6 +27,7 @@ export const run = async (): Promise<void> => {
   const fileName = input.gistFileName ?? path.basename(filePath)
   await octokit.rest.gists.update({
     gist_id: input.gistId,
+    description: input.gistDescription,
     files: {
       [fileName]: {
         fileName,

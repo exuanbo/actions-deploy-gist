@@ -11,6 +11,9 @@ inputs:
   gist_id:
     required: true
     description: "Set id of the gist to be updated."
+  gist_description:
+    required: false
+    description: "Set description of the gist."
   gist_file_name:
     required: false
     description: "Set file name in the gist."
