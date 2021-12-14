@@ -40,7 +40,7 @@ jobs:
           INPUT_TOKEN: ${{ secrets.TOKEN }}
         run: npm run all
 
-  action:
+  action-with-all-inputs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -52,4 +52,16 @@ jobs:
           gist_id: e885afa349a0e5d1cfb408e46d6a37bc
           gist_description: "foo bar"
           gist_file_name: foo.bar
+          file_path: ./__tests__/foo.bar
+
+  action-with-minimum-inputs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Test action
+        uses: ./
+        with:
+          token: ${{ secrets.TOKEN }}
+          gist_id: e885afa349a0e5d1cfb408e46d6a37bc
           file_path: ./__tests__/foo.bar
