@@ -1,7 +1,7 @@
 # Deploy to Gist
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/exuanbo/actions-deploy-gist)](https://github.com/exuanbo/actions-deploy-gist/releases)
-[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/exuanbo/actions-deploy-gist/test/main?event=push)](https://github.com/exuanbo/actions-deploy-gist/actions?query=workflow%3Atest)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/exuanbo/actions-deploy-gist.svg)](https://github.com/exuanbo/actions-deploy-gist/releases)
+[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/exuanbo/actions-deploy-gist/test/main.svg?event=push)](https://github.com/exuanbo/actions-deploy-gist/actions?query=workflow%3Atest)
 [![libera manifesto](https://img.shields.io/badge/libera-manifesto-lightgrey.svg)](https://liberamanifesto.com)
 
 This is a Github Action to deploy your file to Github Gist.
@@ -15,6 +15,7 @@ This is a Github Action to deploy your file to Github Gist.
   with:
     token: ${{ secrets.TOKEN }}
     gist_id: from_your_gist_url
+    gist_description: "foo bar"
     gist_file_name: foo.bar
     file_path: ./dist/foo.bar
 ```
@@ -35,19 +36,23 @@ This is a Github Action to deploy your file to Github Gist.
 
 #### `token`
 
-The personal access token for updating gist.
+Personal access token for updating gist.
 
 #### `gist_id`
 
-The id portion from your gist url, e.g. `https://gist.github.com/exuanbo/`**`e885afa349a0e5d1cfb408e46d6a37bc`**.
+Id portion from the gist url, e.g. `https://gist.github.com/exuanbo/`**`e885afa349a0e5d1cfb408e46d6a37bc`**.
+
+#### `gist_description` (optional)
+
+Optional description of the gist.
 
 #### `gist_file_name` (optional)
 
-The name of the file to be added in your gist. If not provided, the original file name from `file_path` will be used.
+Name of the file to be added in the gist. If not provided, the original file name from `file_path` will be used.
 
 #### `file_path`
 
-Relative to your repo's root directory, e.g. `./dist/foo.bar`.
+Relative to the current repo's root directory, e.g. `./dist/foo.bar`.
 
 ## License
 
