@@ -6,15 +6,16 @@
 
 "use strict";
 
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getInput = void 0;
 function getInputFromEnv(name, options = {}) {
     const value = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`];
     const { required = false } = options;
-    if (required && value === undefined) {
+    if (required && !value) {
         throw new Error(`Input required and not supplied: ${name}`);
     }
-    return value === null || value === void 0 ? void 0 : value.trim();
+    return !value ? undefined : value.trim();
 }
 const getInput = () => {
     return {
