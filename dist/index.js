@@ -2,20 +2,27 @@
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 8657:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getInput = void 0;
-const core_1 = __nccwpck_require__(2186);
+function getInputFromEnv(name, options = {}) {
+    const value = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`];
+    const { required = false } = options;
+    if (required && value === undefined) {
+        throw new Error(`Input required and not supplied: ${name}`);
+    }
+    return value === null || value === void 0 ? void 0 : value.trim();
+}
 const getInput = () => {
     return {
-        token: (0, core_1.getInput)('token'),
-        gistId: (0, core_1.getInput)('gist_id'),
-        gistDescription: (0, core_1.getInput)('gist_description'),
-        gistFileName: (0, core_1.getInput)('gist_file_name'),
-        filePath: (0, core_1.getInput)('file_path')
+        token: getInputFromEnv('token', { required: true }),
+        gistId: getInputFromEnv('gist_id', { required: true }),
+        gistDescription: getInputFromEnv('gist_description'),
+        gistFileName: getInputFromEnv('gist_file_name'),
+        filePath: getInputFromEnv('file_path', { required: true })
     };
 };
 exports.getInput = getInput;
@@ -39,15 +46,14 @@ const core_1 = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(5438);
 const input_1 = __nccwpck_require__(8657);
 const run = async () => {
+    var _a;
     const input = (0, input_1.getInput)();
     const workSpace = process.env.GITHUB_WORKSPACE;
     const filePath = path_1.default.join(workSpace, input.filePath);
-    const fileName = input.gistFileName.length === 0
-        ? path_1.default.basename(filePath)
-        : input.gistFileName;
+    const fileName = (_a = input.gistFileName) !== null && _a !== void 0 ? _a : path_1.default.basename(filePath);
     (0, core_1.startGroup)('Dump inputs');
     (0, core_1.info)(`\
-[INFO] GistId: ${input.gistId}${input.gistDescription.length === 0
+[INFO] GistId: ${input.gistId}${input.gistDescription === undefined
         ? ''
         : `\n[INFO] GistDescription: ${input.gistDescription}`}
 [INFO] GistFileName: ${fileName}

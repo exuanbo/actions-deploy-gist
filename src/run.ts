@@ -9,15 +9,13 @@ export const run = async (): Promise<void> => {
 
   const workSpace = process.env.GITHUB_WORKSPACE!
   const filePath = path.join(workSpace, input.filePath)
-  const fileName =
-    input.gistFileName.length === 0
-      ? path.basename(filePath)
-      : input.gistFileName
+
+  const fileName = input.gistFileName ?? path.basename(filePath)
 
   startGroup('Dump inputs')
   info(`\
 [INFO] GistId: ${input.gistId}${
-    input.gistDescription.length === 0
+    input.gistDescription === undefined
       ? ''
       : `\n[INFO] GistDescription: ${input.gistDescription}`
   }
