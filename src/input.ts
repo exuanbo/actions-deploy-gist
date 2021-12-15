@@ -3,8 +3,8 @@ import { getInput as getActionInput } from '@actions/core'
 type Input = Readonly<{
   token: string
   gistId: string
-  gistDescription?: string
-  gistFileName?: string
+  gistDescription: string
+  gistFileName: string
   filePath: string
 }>
 

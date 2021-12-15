@@ -27,5 +27,6 @@ test('run', () => {
   process.env.INPUT_FILE_PATH = '__tests__/foo.bar'
 
   const filePath = path.join(__dirname, '../lib/index.js')
-  execSync(`node ${filePath}`, { env: process.env })
+  const stdoutBuffer = execSync(`node ${filePath}`, { env: process.env })
+  console.log(stdoutBuffer.toString())
 })

@@ -39,14 +39,15 @@ const core_1 = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(5438);
 const input_1 = __nccwpck_require__(8657);
 const run = async () => {
-    var _a;
     const input = (0, input_1.getInput)();
     const workSpace = process.env.GITHUB_WORKSPACE;
     const filePath = path_1.default.join(workSpace, input.filePath);
-    const fileName = (_a = input.gistFileName) !== null && _a !== void 0 ? _a : path_1.default.basename(filePath);
+    const fileName = input.gistFileName.length === 0
+        ? path_1.default.basename(filePath)
+        : input.gistFileName;
     (0, core_1.startGroup)('Dump inputs');
     (0, core_1.info)(`\
-[INFO] GistId: ${input.gistId}${input.gistDescription === undefined
+[INFO] GistId: ${input.gistId}${input.gistDescription.length === 0
         ? ''
         : `\n[INFO] GistDescription: ${input.gistDescription}`}
 [INFO] GistFileName: ${fileName}
