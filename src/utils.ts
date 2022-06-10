@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid/async'
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 
 // https://github.com/actions/toolkit/blob/b5f31bb5a25d129441c294fc81ba7f92f3e978ba/packages/cache/src/internal/cacheUtils.ts#L13
-export const createTempDirectory = async (): Promise<string> => {
+export async function createTempDirectory(): Promise<string> {
   let tempDirectory = process.env.RUNNER_TEMP
 
   if (!tempDirectory) {
