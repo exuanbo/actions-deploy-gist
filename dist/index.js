@@ -79,8 +79,10 @@ const run = async () => {
         const git = (0, simple_git_1.default)();
         const gistDir = await (0, utils_1.createTempDirectory)();
         await git.clone(`https://${input.token}@gist.github.com/${input.gistId}.git`, gistDir);
-        await fs_1.promises.copyFile(filePath, (0, path_1.join)(gistDir, fileName));
         await git.cwd(gistDir);
+        await git.addConfig('user.name', process.env.GITHUB_ACTOR);
+        await git.addConfig('user.email', `${process.env.GITHUB_ACTOR}@users.noreply.github.com`);
+        await fs_1.promises.copyFile(filePath, (0, path_1.join)(gistDir, fileName));
         await git.add(fileName);
         await git.commit(`Add ${fileName}`);
         await git.push('origin', 'master');
