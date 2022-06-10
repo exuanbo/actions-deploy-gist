@@ -16,9 +16,7 @@ export const run = async (): Promise<void> => {
   startGroup('Dump inputs')
   info(`\
 [INFO] GistId: ${input.gistId}${
-    input.gistDescription === undefined
-      ? ''
-      : `\n[INFO] GistDescription: ${input.gistDescription}`
+    input.gistDescription === undefined ? '' : `\n[INFO] GistDescription: ${input.gistDescription}`
   }
 [INFO] GistFileName: ${fileName}
 [INFO] FilePath: ${input.filePath}`)
@@ -41,10 +39,7 @@ export const run = async (): Promise<void> => {
   } else {
     const git = simpleGit()
     const gistDir = await createTempDirectory()
-    await git.clone(
-      `https://${input.token}@gist.github.com/${input.gistId}.git`,
-      gistDir
-    )
+    await git.clone(`https://${input.token}@gist.github.com/${input.gistId}.git`, gistDir)
     await fs.copyFile(filePath, join(gistDir, fileName))
     await git.cwd(gistDir)
     await git.add(fileName)

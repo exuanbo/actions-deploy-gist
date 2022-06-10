@@ -2,14 +2,8 @@
 
 // https://github.com/actions/toolkit/blob/27f76dfe1afb2b7e5e679cd8e97192d34d8320e6/packages/core/src/core.ts#L128
 function getInputFromEnv(name: string, options: { required: true }): string
-function getInputFromEnv(
-  name: string,
-  options?: { required?: false }
-): string | undefined
-function getInputFromEnv(
-  name: string,
-  options: { required?: boolean } = {}
-): string | undefined {
+function getInputFromEnv(name: string, options?: { required?: false }): string | undefined
+function getInputFromEnv(name: string, options: { required?: boolean } = {}): string | undefined {
   const { required = false } = options
   const value = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`]
   if (required && !value) {
