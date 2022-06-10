@@ -25,8 +25,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "${{ steps.nvm.outputs.NVMRC }}"
-          cache: "npm"
+          node-version: ${{ steps.nvm.outputs.NVMRC }}
+          cache: npm
 
       - name: Update npm
         run: npm install -g npm@latest
@@ -44,7 +44,7 @@ jobs:
           INPUT_TOKEN: ${{ secrets.TOKEN }}
         run: npm run all
 
-  action-with-all-inputs:
+  with-all-inputs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -57,8 +57,9 @@ jobs:
           gist_description: "foo bar"
           gist_file_name: foo.bar
           file_path: ./__tests__/foo.bar
+          file_type: text
 
-  action-with-minimum-inputs:
+  with-minimum-inputs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -69,3 +70,16 @@ jobs:
           token: ${{ secrets.TOKEN }}
           gist_id: e885afa349a0e5d1cfb408e46d6a37bc
           file_path: ./__tests__/foo.bar
+
+  with-binary-file:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Test action
+        uses: ./
+        with:
+          token: ${{ secrets.TOKEN }}
+          gist_id: e885afa349a0e5d1cfb408e46d6a37bc
+          file_path: ./__tests__/dummy.pdf
+          file_type: binary

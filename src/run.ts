@@ -2,14 +2,15 @@ import { promises as fs } from 'fs'
 import { basename, join } from 'path'
 import { startGroup, endGroup, info } from '@actions/core'
 import { getOctokit } from '@actions/github'
+import simpleGit from 'simple-git'
 import { getInput } from './input'
+import { createTempDirectory } from './utils'
 
 export const run = async (): Promise<void> => {
   const input = getInput()
 
-  const workSpace = process.env.GITHUB_WORKSPACE!
-  const filePath = join(workSpace, input.filePath)
-
+  const workspace = process.env.GITHUB_WORKSPACE!
+  const filePath = join(workspace, input.filePath)
   const fileName = input.gistFileName ?? basename(filePath)
 
   startGroup('Dump inputs')
@@ -23,23 +24,33 @@ export const run = async (): Promise<void> => {
 [INFO] FilePath: ${input.filePath}`)
   endGroup()
 
-  startGroup('Read file content')
-  const content = await fs.readFile(filePath, 'utf-8')
-  info(`[INFO] Done with file "${filePath}"`)
-  endGroup()
-
   startGroup('Deploy to gist')
-  const octokit = getOctokit(input.token)
-  await octokit.rest.gists.update({
-    gist_id: input.gistId,
-    description: input.gistDescription,
-    files: {
-      [fileName]: {
-        fileName,
-        content
+  if (input.fileType !== 'binary') {
+    const content = await fs.readFile(filePath, 'utf-8')
+    const octokit = getOctokit(input.token)
+    await octokit.rest.gists.update({
+      gist_id: input.gistId,
+      description: input.gistDescription,
+      files: {
+        [fileName]: {
+          fileName,
+          content
+        }
       }
-    }
-  })
+    })
+  } else {
+    const git = simpleGit()
+    const gistDir = await createTempDirectory()
+    await git.clone(
+      `https://${input.token}@gist.github.com/${input.gistId}.git`,
+      gistDir
+    )
+    await fs.copyFile(filePath, join(gistDir, fileName))
+    await git.cwd(gistDir)
+    await git.add(fileName)
+    await git.commit(`Add ${fileName}`)
+    await git.push('origin', 'master')
+  }
   info(`[INFO] Done with gist "${input.gistId}/${fileName}"`)
   endGroup()
 

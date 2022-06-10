@@ -20,7 +20,9 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "1.8.2",
-    "@actions/github": "5.0.3"
+    "@actions/github": "5.0.3",
+    "nanoid": "3.3.4",
+    "simple-git": "3.7.1"
   },
   "devDependencies": {
     "@types/jest": "28.1.1",

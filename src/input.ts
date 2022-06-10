@@ -4,7 +4,7 @@
 function getInputFromEnv(name: string, options: { required: true }): string
 function getInputFromEnv(
   name: string,
-  options?: Record<string, never> | { required: false }
+  options?: { required?: false }
 ): string | undefined
 function getInputFromEnv(
   name: string,
@@ -24,6 +24,7 @@ type Input = Readonly<{
   gistDescription: string | undefined
   gistFileName: string | undefined
   filePath: string
+  fileType: string | undefined
 }>
 
 export const getInput = (): Input => {
@@ -32,6 +33,7 @@ export const getInput = (): Input => {
     gistId: getInputFromEnv('gist_id', { required: true }),
     gistDescription: getInputFromEnv('gist_description'),
     gistFileName: getInputFromEnv('gist_file_name'),
-    filePath: getInputFromEnv('file_path', { required: true })
+    filePath: getInputFromEnv('file_path', { required: true }),
+    fileType: getInputFromEnv('file_type')
   }
 }

@@ -20,6 +20,10 @@ inputs:
   file_path:
     required: true
     description: "Set path of the file to be deployed."
+  file_type:
+    required: false
+    description: "Set file type of the file to be deployed."
+    default: "text"
 runs:
   using: "node16"
   main: "dist/index.js"
