@@ -57,11 +57,13 @@ const run = async () => {
     const fileName = input.gistFileName ?? (0, path_1.basename)(filePath);
     const fileType = input.fileType === 'binary' ? 'binary' : 'text';
     (0, core_1.startGroup)('Dump inputs');
-    (0, core_1.info)(`\
-[INFO] GistId: ${gistId}${gistDescription === undefined ? '' : `\n[INFO] GistDescription: ${gistDescription}`}
-[INFO] GistFileName: ${fileName}
-[INFO] FilePath: ${input.filePath}
-[INFO] FileType: ${fileType}`);
+    (0, core_1.info)(`[INFO] GistId: ${gistId}`);
+    if (gistDescription !== undefined) {
+        (0, core_1.info)(`[INFO] GistDescription: ${gistDescription}`);
+    }
+    (0, core_1.info)(`[INFO] GistFileName: ${fileName}`);
+    (0, core_1.info)(`[INFO] FilePath: ${input.filePath}`);
+    (0, core_1.info)(`[INFO] FileType: ${fileType}`);
     (0, core_1.endGroup)();
     (0, core_1.startGroup)('Deploy to gist');
     if (fileType === 'text') {

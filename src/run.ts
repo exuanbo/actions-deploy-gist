@@ -17,13 +17,13 @@ export const run = async (): Promise<void> => {
   const fileType = input.fileType === 'binary' ? 'binary' : 'text'
 
   startGroup('Dump inputs')
-  info(`\
-[INFO] GistId: ${gistId}${
-    gistDescription === undefined ? '' : `\n[INFO] GistDescription: ${gistDescription}`
+  info(`[INFO] GistId: ${gistId}`)
+  if (gistDescription !== undefined) {
+    info(`[INFO] GistDescription: ${gistDescription}`)
   }
-[INFO] GistFileName: ${fileName}
-[INFO] FilePath: ${input.filePath}
-[INFO] FileType: ${fileType}`)
+  info(`[INFO] GistFileName: ${fileName}`)
+  info(`[INFO] FilePath: ${input.filePath}`)
+  info(`[INFO] FileType: ${fileType}`)
   endGroup()
 
   startGroup('Deploy to gist')
