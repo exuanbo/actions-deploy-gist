@@ -87,7 +87,8 @@ const run = async () => {
         await fs_1.promises.copyFile(filePath, (0, path_1.join)(gistDir, fileName));
         await git.add(fileName);
         await git.commit(`Add ${fileName}`);
-        await git.push('origin', 'master');
+        const branch = await git.revparse(['--abbrev-ref', 'HEAD']);
+        await git.push('origin', branch);
     }
     (0, core_1.info)(`[INFO] Done with gist "${input.gistId}/${fileName}"`);
     (0, core_1.endGroup)();
