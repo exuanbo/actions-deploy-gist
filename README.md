@@ -4,20 +4,19 @@
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/exuanbo/actions-deploy-gist/test/main.svg?event=push)](https://github.com/exuanbo/actions-deploy-gist/actions?query=workflow%3Atest)
 [![libera manifesto](https://img.shields.io/badge/libera-manifesto-lightgrey.svg)](https://liberamanifesto.com)
 
-This is a Github Action to deploy your file to Github Gist.
+This is a Github Action to deploy file to Github Gist.
 
 ## Quick start
 
 ```yml
-- uses: actions/checkout@v2
+- uses: actions/checkout@v3
 - name: Deploy
   uses: exuanbo/actions-deploy-gist@v1
   with:
     token: ${{ secrets.TOKEN }}
-    gist_id: from_your_gist_url
-    gist_description: "foo bar"
-    gist_file_name: foo.bar
-    file_path: ./dist/foo.bar
+    gist_id: from_gist_url
+    file_path: build/book.pdf
+    file_type: binary
 ```
 
 ## Setup
@@ -25,7 +24,7 @@ This is a Github Action to deploy your file to Github Gist.
 ### Prep work
 
 1. Create a gist (public or secret) if you don't have one.
-1. Generate a new [Personal access token](https://github.com/settings/tokens/). Only the `gist` scope is needed. Check [Scopes for OAuth Apps](https://docs.github.com/en/developers/apps/scopes-for-oauth-apps) for details.
+1. Generate a new [Personal access token](https://github.com/settings/tokens/). Only the `gist` scope is needed.
 
 ### Project setup
 
@@ -44,7 +43,7 @@ Id portion from the gist url, e.g. `https://gist.github.com/exuanbo/`**`e885afa3
 
 #### `gist_description` (optional)
 
-Optional description of the gist.
+Description of the gist.
 
 #### `gist_file_name` (optional)
 
@@ -52,7 +51,11 @@ Name of the file to be added in the gist. If not provided, the original file nam
 
 #### `file_path`
 
-Relative to the current repo's root directory, e.g. `./dist/foo.bar`.
+Relative to the current repo's root directory, e.g. `dist/foo.bar`.
+
+#### `file_type` (optional)
+
+Default to `text`. It should be set to `binary` if the file is image, pdf, etc.
 
 ## License
 
