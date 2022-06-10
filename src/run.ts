@@ -43,7 +43,7 @@ export const run = async (): Promise<void> => {
   } else {
     const git = simpleGit()
     const gistDir = await createTempDirectory()
-    await git.clone(`https://${token}@gist.github.com/${gistId}.git`, gistDir)
+    await git.clone(`https://${token}@gist.github.com/${gistId}.git`, gistDir, { '--depth': 1 })
     await git.cwd(gistDir)
     await git.addConfig('user.name', process.env.GITHUB_ACTOR!)
     await git.addConfig('user.email', `${process.env.GITHUB_ACTOR}@users.noreply.github.com`)
