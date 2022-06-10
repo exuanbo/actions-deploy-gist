@@ -51,13 +51,14 @@ const input_1 = __nccwpck_require__(8657);
 const utils_1 = __nccwpck_require__(918);
 const run = async () => {
     const input = (0, input_1.getInput)();
+    const { token, gistId, gistDescription } = input;
     const workspace = process.env.GITHUB_WORKSPACE;
     const filePath = (0, path_1.join)(workspace, input.filePath);
     const fileName = input.gistFileName ?? (0, path_1.basename)(filePath);
     const fileType = input.fileType === 'binary' ? 'binary' : 'text';
     (0, core_1.startGroup)('Dump inputs');
     (0, core_1.info)(`\
-[INFO] GistId: ${input.gistId}${input.gistDescription === undefined ? '' : `\n[INFO] GistDescription: ${input.gistDescription}`}
+[INFO] GistId: ${gistId}${gistDescription === undefined ? '' : `\n[INFO] GistDescription: ${gistDescription}`}
 [INFO] GistFileName: ${fileName}
 [INFO] FilePath: ${input.filePath}
 [INFO] FileType: ${fileType}`);
@@ -65,10 +66,10 @@ const run = async () => {
     (0, core_1.startGroup)('Deploy to gist');
     if (fileType === 'text') {
         const content = await fs_1.promises.readFile(filePath, 'utf-8');
-        const octokit = (0, github_1.getOctokit)(input.token);
+        const octokit = (0, github_1.getOctokit)(token);
         await octokit.rest.gists.update({
-            gist_id: input.gistId,
-            description: input.gistDescription,
+            gist_id: gistId,
+            description: gistDescription,
             files: {
                 [fileName]: {
                     fileName,
@@ -80,7 +81,7 @@ const run = async () => {
     else {
         const git = (0, simple_git_1.default)();
         const gistDir = await (0, utils_1.createTempDirectory)();
-        await git.clone(`https://${input.token}@gist.github.com/${input.gistId}.git`, gistDir);
+        await git.clone(`https://${token}@gist.github.com/${gistId}.git`, gistDir);
         await git.cwd(gistDir);
         await git.addConfig('user.name', process.env.GITHUB_ACTOR);
         await git.addConfig('user.email', `${process.env.GITHUB_ACTOR}@users.noreply.github.com`);
@@ -90,7 +91,7 @@ const run = async () => {
         const branch = await git.revparse(['--abbrev-ref', 'HEAD']);
         await git.push('origin', branch);
     }
-    (0, core_1.info)(`[INFO] Done with gist "${input.gistId}/${fileName}"`);
+    (0, core_1.info)(`[INFO] Done with gist "${gistId}/${fileName}"`);
     (0, core_1.endGroup)();
     (0, core_1.info)('[INFO] Action successfully completed');
 };

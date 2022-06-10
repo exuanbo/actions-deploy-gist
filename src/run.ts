@@ -8,6 +8,7 @@ import { createTempDirectory } from './utils'
 
 export const run = async (): Promise<void> => {
   const input = getInput()
+  const { token, gistId, gistDescription } = input
 
   const workspace = process.env.GITHUB_WORKSPACE!
   const filePath = join(workspace, input.filePath)
@@ -17,8 +18,8 @@ export const run = async (): Promise<void> => {
 
   startGroup('Dump inputs')
   info(`\
-[INFO] GistId: ${input.gistId}${
-    input.gistDescription === undefined ? '' : `\n[INFO] GistDescription: ${input.gistDescription}`
+[INFO] GistId: ${gistId}${
+    gistDescription === undefined ? '' : `\n[INFO] GistDescription: ${gistDescription}`
   }
 [INFO] GistFileName: ${fileName}
 [INFO] FilePath: ${input.filePath}
@@ -28,10 +29,10 @@ export const run = async (): Promise<void> => {
   startGroup('Deploy to gist')
   if (fileType === 'text') {
     const content = await fs.readFile(filePath, 'utf-8')
-    const octokit = getOctokit(input.token)
+    const octokit = getOctokit(token)
     await octokit.rest.gists.update({
-      gist_id: input.gistId,
-      description: input.gistDescription,
+      gist_id: gistId,
+      description: gistDescription,
       files: {
         [fileName]: {
           fileName,
@@ -42,7 +43,7 @@ export const run = async (): Promise<void> => {
   } else {
     const git = simpleGit()
     const gistDir = await createTempDirectory()
-    await git.clone(`https://${input.token}@gist.github.com/${input.gistId}.git`, gistDir)
+    await git.clone(`https://${token}@gist.github.com/${gistId}.git`, gistDir)
     await git.cwd(gistDir)
     await git.addConfig('user.name', process.env.GITHUB_ACTOR!)
     await git.addConfig('user.email', `${process.env.GITHUB_ACTOR}@users.noreply.github.com`)
@@ -52,7 +53,7 @@ export const run = async (): Promise<void> => {
     const branch = await git.revparse(['--abbrev-ref', 'HEAD'])
     await git.push('origin', branch)
   }
-  info(`[INFO] Done with gist "${input.gistId}/${fileName}"`)
+  info(`[INFO] Done with gist "${gistId}/${fileName}"`)
   endGroup()
 
   info('[INFO] Action successfully completed')
