@@ -10,8 +10,8 @@ function getInputFromEnv(
   name: string,
   options: { required?: boolean } = {}
 ): string | undefined {
-  const value = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`]
   const { required = false } = options
+  const value = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`]
   if (required && !value) {
     throw new Error(`Input required and not supplied: ${name}`)
   }

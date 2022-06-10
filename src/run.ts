@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs'
-import path from 'path'
+import { basename, join } from 'path'
 import { startGroup, endGroup, info } from '@actions/core'
 import { getOctokit } from '@actions/github'
 import { getInput } from './input'
@@ -8,9 +8,9 @@ export const run = async (): Promise<void> => {
   const input = getInput()
 
   const workSpace = process.env.GITHUB_WORKSPACE!
-  const filePath = path.join(workSpace, input.filePath)
+  const filePath = join(workSpace, input.filePath)
 
-  const fileName = input.gistFileName ?? path.basename(filePath)
+  const fileName = input.gistFileName ?? basename(filePath)
 
   startGroup('Dump inputs')
   info(`\
