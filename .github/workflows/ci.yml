@@ -1,4 +1,4 @@
-name: "test"
+name: CI
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Dump GitHub context
         env:
@@ -22,10 +22,14 @@ jobs:
         run: echo "::set-output name=NVMRC::$(cat .nvmrc)"
         id: nvm
 
-      - name: Setup Node
-        uses: actions/setup-node@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
+          cache: "npm"
+
+      - name: Update npm
+        run: npm install -g npm@latest
 
       - name: Dump version
         run: |
@@ -43,7 +47,7 @@ jobs:
   action-with-all-inputs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Test action
         uses: ./
@@ -57,7 +61,7 @@ jobs:
   action-with-minimum-inputs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Test action
         uses: ./
