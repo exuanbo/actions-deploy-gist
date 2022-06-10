@@ -52,8 +52,7 @@ const utils_1 = __nccwpck_require__(918);
 const run = async () => {
     const input = (0, input_1.getInput)();
     const { token, gistId, gistDescription } = input;
-    const workspace = process.env.GITHUB_WORKSPACE;
-    const filePath = (0, path_1.join)(workspace, input.filePath);
+    const filePath = (0, path_1.join)(process.env.GITHUB_WORKSPACE, input.filePath);
     const fileName = input.gistFileName ?? (0, path_1.basename)(filePath);
     const fileType = input.fileType === 'binary' ? 'binary' : 'text';
     (0, core_1.startGroup)('Dump inputs');
@@ -72,12 +71,7 @@ const run = async () => {
         await octokit.rest.gists.update({
             gist_id: gistId,
             description: gistDescription,
-            files: {
-                [fileName]: {
-                    fileName,
-                    content
-                }
-            }
+            files: { [fileName]: { fileName, content } }
         });
     }
     else {

@@ -10,8 +10,7 @@ export const run = async (): Promise<void> => {
   const input = getInput()
   const { token, gistId, gistDescription } = input
 
-  const workspace = process.env.GITHUB_WORKSPACE!
-  const filePath = join(workspace, input.filePath)
+  const filePath = join(process.env.GITHUB_WORKSPACE!, input.filePath)
   const fileName = input.gistFileName ?? basename(filePath)
 
   const fileType = input.fileType === 'binary' ? 'binary' : 'text'
@@ -33,12 +32,7 @@ export const run = async (): Promise<void> => {
     await octokit.rest.gists.update({
       gist_id: gistId,
       description: gistDescription,
-      files: {
-        [fileName]: {
-          fileName,
-          content
-        }
-      }
+      files: { [fileName]: { fileName, content } }
     })
   } else {
     const git = simpleGit()
