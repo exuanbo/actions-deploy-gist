@@ -13,17 +13,20 @@ export const run = async (): Promise<void> => {
   const filePath = join(workspace, input.filePath)
   const fileName = input.gistFileName ?? basename(filePath)
 
+  const fileType = input.fileType === 'binary' ? 'binary' : 'text'
+
   startGroup('Dump inputs')
   info(`\
 [INFO] GistId: ${input.gistId}${
     input.gistDescription === undefined ? '' : `\n[INFO] GistDescription: ${input.gistDescription}`
   }
 [INFO] GistFileName: ${fileName}
-[INFO] FilePath: ${input.filePath}`)
+[INFO] FilePath: ${input.filePath}
+[INFO] FileType: ${fileType}`)
   endGroup()
 
   startGroup('Deploy to gist')
-  if (input.fileType !== 'binary') {
+  if (fileType === 'text') {
     const content = await fs.readFile(filePath, 'utf-8')
     const octokit = getOctokit(input.token)
     await octokit.rest.gists.update({

@@ -54,14 +54,16 @@ const run = async () => {
     const workspace = process.env.GITHUB_WORKSPACE;
     const filePath = (0, path_1.join)(workspace, input.filePath);
     const fileName = input.gistFileName ?? (0, path_1.basename)(filePath);
+    const fileType = input.fileType === 'binary' ? 'binary' : 'text';
     (0, core_1.startGroup)('Dump inputs');
     (0, core_1.info)(`\
 [INFO] GistId: ${input.gistId}${input.gistDescription === undefined ? '' : `\n[INFO] GistDescription: ${input.gistDescription}`}
 [INFO] GistFileName: ${fileName}
-[INFO] FilePath: ${input.filePath}`);
+[INFO] FilePath: ${input.filePath}
+[INFO] FileType: ${fileType}`);
     (0, core_1.endGroup)();
     (0, core_1.startGroup)('Deploy to gist');
-    if (input.fileType !== 'binary') {
+    if (fileType === 'text') {
         const content = await fs_1.promises.readFile(filePath, 'utf-8');
         const octokit = (0, github_1.getOctokit)(input.token);
         await octokit.rest.gists.update({
@@ -109,7 +111,7 @@ const async_1 = __nccwpck_require__(9456);
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 // https://github.com/actions/toolkit/blob/b5f31bb5a25d129441c294fc81ba7f92f3e978ba/packages/cache/src/internal/cacheUtils.ts#L13
-const createTempDirectory = async () => {
+async function createTempDirectory() {
     let tempDirectory = process.env.RUNNER_TEMP;
     if (!tempDirectory) {
         let baseLocation;
@@ -129,7 +131,7 @@ const createTempDirectory = async () => {
     const dest = (0, path_1.join)(tempDirectory, await (0, async_1.nanoid)());
     await fs_1.promises.mkdir(dest, { recursive: true });
     return dest;
-};
+}
 exports.createTempDirectory = createTempDirectory;
 
 
