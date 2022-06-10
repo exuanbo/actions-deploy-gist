@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -rf lib && tsc -p tsconfig.prod.json",
     "test": "npm run build && ts-standardx && jest",
-    "package": "ncc build --license licenses.txt",
+    "package": "ncc build --license licenses.txt --target es2021",
     "all": "npm test && npm run package"
   },
   "repository": {

@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
 
-    "target": "es2019",
+    "target": "es2021",
 
     "skipLibCheck": true
   }
