@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 
 // https://github.com/actions/toolkit/blob/27f76dfe1afb2b7e5e679cd8e97192d34d8320e6/packages/core/src/core.ts#L128
 function getInputFromEnv(name: string, options: { required: true }): string
 function getInputFromEnv(name: string, options?: { required?: false }): string | undefined
 function getInputFromEnv(name: string, options: { required?: boolean } = {}): string | undefined {
   const { required = false } = options
-  const value = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`]
+  const key = `INPUT_${name.replace(/ /g, '_').toUpperCase()}`
+  const value = process.env[key]?.trim()
   if (required && !value) {
     throw new Error(`Input required and not supplied: ${name}`)
   }
-  return !value ? undefined : value.trim()
+  return value || undefined
 }
 
 type Input = Readonly<{

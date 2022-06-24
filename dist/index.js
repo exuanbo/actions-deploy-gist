@@ -7,15 +7,17 @@
 "use strict";
 
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getInput = void 0;
 function getInputFromEnv(name, options = {}) {
     const { required = false } = options;
-    const value = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`];
+    const key = `INPUT_${name.replace(/ /g, '_').toUpperCase()}`;
+    const value = process.env[key]?.trim();
     if (required && !value) {
         throw new Error(`Input required and not supplied: ${name}`);
     }
-    return !value ? undefined : value.trim();
+    return value || undefined;
 }
 const getInput = () => {
     return {
