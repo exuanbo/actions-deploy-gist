@@ -1,16 +1,14 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 8657:
+/***/ 1044:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getInput = void 0;
-function getInputFromEnv(name, options = {}) {
+exports.getActionInput = void 0;
+function getInput(name, options = {}) {
     const { required = false } = options;
     const key = `INPUT_${name.replace(/ /g, '_').toUpperCase()}`;
     const value = process.env[key]?.trim();
@@ -19,22 +17,39 @@ function getInputFromEnv(name, options = {}) {
     }
     return value || undefined;
 }
-const getInput = () => {
+const TRUE_VALUES = ['true', 'True', 'TRUE'];
+const FALSE_VALUES = ['false', 'False', 'FALSE'];
+function getBooleanInput(name, options = {}) {
+    const value = getInput(name, options);
+    if (value === undefined) {
+        return undefined;
+    }
+    if (TRUE_VALUES.includes(value)) {
+        return true;
+    }
+    if (FALSE_VALUES.includes(value)) {
+        return false;
+    }
+    throw new TypeError(`Input does not meet YAML 1.2 "Core Schema" specification: ${name}\n` +
+        'Support boolean input list: `true | True | TRUE | false | False | FALSE`');
+}
+const getActionInput = () => {
     return {
-        token: getInputFromEnv('token', { required: true }),
-        gistId: getInputFromEnv('gist_id', { required: true }),
-        gistDescription: getInputFromEnv('gist_description'),
-        gistFileName: getInputFromEnv('gist_file_name'),
-        filePath: getInputFromEnv('file_path', { required: true }),
-        fileType: getInputFromEnv('file_type')
+        token: getInput('token', { required: true }),
+        gistId: getInput('gist_id'),
+        createAsPublic: getBooleanInput('create_as_public'),
+        gistDescription: getInput('gist_description'),
+        gistFileName: getInput('gist_file_name'),
+        filePath: getInput('file_path', { required: true }),
+        fileType: getInput('file_type')
     };
 };
-exports.getInput = getInput;
+exports.getActionInput = getActionInput;
 
 
 /***/ }),
 
-/***/ 7884:
+/***/ 3995:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -47,33 +62,50 @@ exports.run = void 0;
 const fs_1 = __nccwpck_require__(7147);
 const path_1 = __nccwpck_require__(1017);
 const core_1 = __nccwpck_require__(2186);
-const github_1 = __nccwpck_require__(5438);
 const simple_git_1 = __importDefault(__nccwpck_require__(9103));
-const input_1 = __nccwpck_require__(8657);
-const utils_1 = __nccwpck_require__(918);
-const run = async () => {
-    const input = (0, input_1.getInput)();
-    const { token, gistId, gistDescription } = input;
-    const filePath = (0, path_1.join)(process.env.GITHUB_WORKSPACE, input.filePath);
-    const fileName = input.gistFileName ?? (0, path_1.basename)(filePath);
-    const fileType = input.fileType === 'binary' ? 'binary' : 'text';
+const utils_1 = __nccwpck_require__(7696);
+const package_json_1 = __nccwpck_require__(2876);
+const MAIN_VERSION = package_json_1.version.split('.')[0];
+const PLACEHOLDER = `Created by ${package_json_1.author.name}/${package_json_1.name}@v${MAIN_VERSION}`;
+const run = async (context) => {
+    const { token, createAsPublic = true, gistDescription, filePath: unresolvedFilePath, fileType: unvalidatedFileType = 'text' } = context.input;
+    const workspace = process.env.GITHUB_WORKSPACE ?? process.cwd();
+    const filePath = (0, path_1.resolve)(workspace, unresolvedFilePath);
+    const fileType = ['text', 'binary'].includes(unvalidatedFileType) ? unvalidatedFileType : 'text';
+    let { gistId, gistFileName } = context.input;
+    if (gistFileName === undefined) {
+        gistFileName = (0, path_1.basename)(filePath);
+    }
     (0, core_1.startGroup)('Dump inputs');
-    (0, core_1.info)(`[INFO] GistId: ${gistId}`);
+    if (gistId !== undefined) {
+        (0, core_1.info)(`[INFO] GistId: ${gistId}`);
+    }
+    else {
+        (0, core_1.info)(`[INFO] CreateAsPublic: ${createAsPublic}`);
+    }
     if (gistDescription !== undefined) {
         (0, core_1.info)(`[INFO] GistDescription: ${gistDescription}`);
     }
-    (0, core_1.info)(`[INFO] GistFileName: ${fileName}`);
-    (0, core_1.info)(`[INFO] FilePath: ${input.filePath}`);
+    (0, core_1.info)(`[INFO] GistFileName: ${gistFileName}`);
+    (0, core_1.info)(`[INFO] FilePath: ${unresolvedFilePath}`);
     (0, core_1.info)(`[INFO] FileType: ${fileType}`);
     (0, core_1.endGroup)();
     (0, core_1.startGroup)('Deploy to gist');
+    if (gistId === undefined) {
+        const response = await context.octokit.rest.gists.create({
+            files: { [gistFileName]: { content: PLACEHOLDER } },
+            public: createAsPublic
+        });
+        gistId = response.data.id;
+        context.createdGistId = gistId;
+        (0, core_1.info)(`[INFO] Created gist "${gistId}"`);
+    }
     if (fileType === 'text') {
         const content = await fs_1.promises.readFile(filePath, 'utf-8');
-        const octokit = (0, github_1.getOctokit)(token);
-        await octokit.rest.gists.update({
+        await context.octokit.rest.gists.update({
             gist_id: gistId,
             description: gistDescription,
-            files: { [fileName]: { fileName, content } }
+            files: { [gistFileName]: { content } }
         });
     }
     else {
@@ -83,13 +115,13 @@ const run = async () => {
         await git.cwd(gistDir);
         await git.addConfig('user.name', process.env.GITHUB_ACTOR);
         await git.addConfig('user.email', `${process.env.GITHUB_ACTOR}@users.noreply.github.com`);
-        await fs_1.promises.copyFile(filePath, (0, path_1.join)(gistDir, fileName));
-        await git.add(fileName);
-        await git.commit(`Add ${fileName}`);
+        await fs_1.promises.copyFile(filePath, (0, path_1.join)(gistDir, gistFileName));
+        await git.add(gistFileName);
+        await git.commit(`Add ${gistFileName}`);
         const branch = await git.revparse(['--abbrev-ref', 'HEAD']);
         await git.push('origin', branch);
     }
-    (0, core_1.info)(`[INFO] Done with gist "${gistId}/${fileName}"`);
+    (0, core_1.info)(`[INFO] Done with gist "${gistId}/${gistFileName}"`);
     (0, core_1.endGroup)();
     (0, core_1.info)('[INFO] Action successfully completed');
 };
@@ -98,7 +130,7 @@ exports.run = run;
 
 /***/ }),
 
-/***/ 918:
+/***/ 7696:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -14249,6 +14281,14 @@ module.exports = { urlAlphabet }
 
 /***/ }),
 
+/***/ 2876:
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"name":"actions-deploy-gist","version":"1.1.4","private":true,"main":"lib/src/index.js","scripts":{"build":"rm -rf lib && tsc -p tsconfig.prod.json","test":"npm run build && ts-standardx && jest","package":"ncc build --license licenses.txt --target es2021","all":"npm test && npm run package"},"repository":{"type":"git","url":"git+https://github.com/exuanbo/actions-deploy-gist.git"},"author":{"name":"exuanbo","email":"exuanbo@protonmail.com"},"license":"MIT","dependencies":{"@actions/core":"1.8.2","@actions/github":"5.0.3","nanoid":"3.3.4","simple-git":"3.7.1"},"devDependencies":{"@types/jest":"28.1.1","@types/node":"16.11.39","@vercel/ncc":"0.34.0","dotenv":"16.0.1","jest":"28.1.1","ts-jest":"28.0.4","ts-standardx":"0.8.4","typescript":"4.4.4"}}');
+
+/***/ }),
+
 /***/ 2020:
 /***/ ((module) => {
 
@@ -14303,19 +14343,39 @@ var exports = __webpack_exports__;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(2186);
-const run_1 = __nccwpck_require__(7884);
-(async () => {
+const github_1 = __nccwpck_require__(5438);
+const input_1 = __nccwpck_require__(1044);
+const run_1 = __nccwpck_require__(3995);
+const main = async () => {
+    const input = (0, input_1.getActionInput)();
+    const octokit = (0, github_1.getOctokit)(input.token);
+    const context = {
+        input,
+        octokit
+    };
     try {
-        await (0, run_1.run)();
+        await (0, run_1.run)(context);
+        if (context.createdGistId !== undefined) {
+            (0, core_1.setOutput)('gist_id', context.createdGistId);
+        }
     }
     catch (err) {
         if (err instanceof Error) {
+            if (context.createdGistId !== undefined) {
+                try {
+                    await octokit.rest.gists.delete({
+                        gist_id: context.createdGistId
+                    });
+                }
+                catch { }
+            }
             (0, core_1.setFailed)(`[INFO] Action failed with "Error: ${err.message}"`);
             return;
         }
         throw err;
     }
-})();
+};
+void main();
 
 })();
 

@@ -2,7 +2,7 @@
   "name": "actions-deploy-gist",
   "version": "1.1.4",
   "private": true,
-  "main": "lib/index.js",
+  "main": "lib/src/index.js",
   "scripts": {
     "build": "rm -rf lib && tsc -p tsconfig.prod.json",
     "test": "npm run build && ts-standardx && jest",

@@ -4,11 +4,13 @@
 
     "module": "commonjs",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
 
     "noEmit": true,
 
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
 
     "target": "es2021",
 

@@ -19,8 +19,8 @@ jobs:
         run: echo "${GITHUB_CONTEXT}"
 
       - name: Read .nvmrc
-        run: echo "::set-output name=NVMRC::$(cat .nvmrc)"
         id: nvm
+        run: echo "::set-output name=NVMRC::$(cat .nvmrc)"
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -44,6 +44,21 @@ jobs:
           INPUT_TOKEN: ${{ secrets.TOKEN }}
         run: npm run all
 
+  create-gist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Test action
+        id: deploy-gist
+        uses: ./
+        with:
+          token: ${{ secrets.TOKEN }}
+          file_path: ./__tests__/foo.bar
+
+      - name: Dump action output
+        run: echo "${{ steps.deploy-gist.outputs.gist_id }}"
+
   with-all-inputs:
     runs-on: ubuntu-latest
     steps:
@@ -59,18 +74,6 @@ jobs:
           file_path: ./__tests__/foo.bar
           file_type: text
 
-  with-minimum-inputs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Test action
-        uses: ./
-        with:
-          token: ${{ secrets.TOKEN }}
-          gist_id: e885afa349a0e5d1cfb408e46d6a37bc
-          file_path: ./__tests__/foo.bar
-
   with-binary-file:
     runs-on: ubuntu-latest
     steps:
@@ -83,3 +86,14 @@ jobs:
           gist_id: e885afa349a0e5d1cfb408e46d6a37bc
           file_path: ./__tests__/dummy.pdf
           file_type: binary
+
+  with-absolute-file-path:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test action
+          uses: ./
+          with:
+            token: ${{ secrets.TOKEN }}
+            gist_id: e885afa349a0e5d1cfb408e46d6a37bc
+            file_path: ${{ GITHUB_WORKSPACE }}/__tests__/foo.bar

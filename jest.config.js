@@ -4,6 +4,7 @@ module.exports = {
       isolatedModules: true
     }
   },
+  modulePathIgnorePatterns: ['<rootDir>/lib'],
   preset: 'ts-jest',
   testEnvironment: 'node',
   testMatch: ['<rootDir>/__tests__/**/*.test.ts'],
