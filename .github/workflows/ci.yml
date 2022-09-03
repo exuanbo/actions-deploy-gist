@@ -86,15 +86,3 @@ jobs:
           gist_id: e885afa349a0e5d1cfb408e46d6a37bc
           file_path: ./__tests__/dummy.pdf
           file_type: binary
-
-  with-absolute-file-path:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Test action
-        uses: ./
-        with:
-          token: ${{ secrets.TOKEN }}
-          gist_id: e885afa349a0e5d1cfb408e46d6a37bc
-          file_path: "${{ env.GITHUB_WORKSPACE }}/__tests__/foo.bar"
