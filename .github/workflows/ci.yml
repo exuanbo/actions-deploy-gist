@@ -91,9 +91,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Test action
-          uses: ./
-          with:
-            token: ${{ secrets.TOKEN }}
-            gist_id: e885afa349a0e5d1cfb408e46d6a37bc
-            file_path: ${{ GITHUB_WORKSPACE }}/__tests__/foo.bar
+        uses: ./
+        with:
+          token: ${{ secrets.TOKEN }}
+          gist_id: e885afa349a0e5d1cfb408e46d6a37bc
+          file_path: ${{ GITHUB_WORKSPACE }}/__tests__/foo.bar
