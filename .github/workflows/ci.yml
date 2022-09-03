@@ -97,4 +97,4 @@ jobs:
         with:
           token: ${{ secrets.TOKEN }}
           gist_id: e885afa349a0e5d1cfb408e46d6a37bc
-          file_path: $GITHUB_WORKSPACE/__tests__/foo.bar
+          file_path: ${{ format('{0}/__tests__/foo.bar', env.GITHUB_WORKSPACE) }}
