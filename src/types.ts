@@ -10,10 +10,10 @@ export interface ActionInput {
   readonly fileType: string | undefined
 }
 
-type Octokit = ReturnType<typeof getOctokit>
+type ActionOctokit = ReturnType<typeof getOctokit>
 
 export interface ActionContext {
   readonly input: ActionInput
-  readonly octokit: Octokit
+  readonly octokit: ActionOctokit
   createdGistId?: string
 }
