@@ -4,7 +4,7 @@ interface InputOptions {
   required?: boolean
 }
 
-// https://github.com/actions/toolkit/blob/27f76dfe1afb2b7e5e679cd8e97192d34d8320e6/packages/core/src/core.ts#L128
+// https://github.com/actions/toolkit/blob/bc4be505973a6a7344bfd71e1b32f77e1755310c/packages/core/src/core.ts#L143
 function getInput(name: string, options: InputOptions & { required: true }): string
 function getInput(name: string, options?: InputOptions): string | undefined
 function getInput(name: string, options: InputOptions = {}): string | undefined {
@@ -20,7 +20,7 @@ function getInput(name: string, options: InputOptions = {}): string | undefined 
 const TRUE_VALUES = ['true', 'True', 'TRUE']
 const FALSE_VALUES = ['false', 'False', 'FALSE']
 
-// https://github.com/actions/toolkit/blob/c5278cdd088a8ed6a87dbd5c80d7c1ae03beb6e5/packages/core/src/core.ts#L171
+// https://github.com/actions/toolkit/blob/bc4be505973a6a7344bfd71e1b32f77e1755310c/packages/core/src/core.ts#L186
 function getBooleanInput(name: string, options: InputOptions & { required: true }): boolean
 function getBooleanInput(name: string, options?: InputOptions): boolean | undefined
 function getBooleanInput(name: string, options: InputOptions = {}): boolean | undefined {
