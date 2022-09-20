@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs'
 import { basename, join, resolve } from 'path'
 import { startGroup, endGroup, info } from '@actions/core'
-import simpleGit from 'simple-git'
+import { simpleGit } from 'simple-git'
 import type { ActionContext } from './types'
 import { createTempDirectory } from './utils'
 import { name as projectName, version, author } from '../package.json'

@@ -2,17 +2,16 @@
   "compilerOptions": {
     "strict": true,
 
-    "module": "commonjs",
+    "module": "ES2020",
     "moduleResolution": "node",
     "resolveJsonModule": true,
 
     "noEmit": true,
 
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
 
-    "target": "es2021",
+    "target": "ES2021",
 
     "skipLibCheck": true
   }
