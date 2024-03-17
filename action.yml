@@ -25,5 +25,5 @@ inputs:
     description: "Set file type of the file to be deployed."
     default: "text"
 runs:
-  using: "node16"
+  using: "node20"
   main: "dist/index.js"
